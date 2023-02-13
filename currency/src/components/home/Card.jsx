@@ -30,14 +30,9 @@ export default function Card({
     const unixDate = new Date(element.fecha).getTime() / 1000;
     dates.unshift({ x: unixDate, y: element.valor });
   });
-  console.log(name);
-  console.log('DATEEEES', dates);
 
   const { slope, intercept } = linearRegression(dates);
-  console.log(slope, intercept);
-
   const today = Math.floor(Date.now() / 1000);
-  console.log('today', today);
   const tomorrow = today + 864;
   const predictValueToday = slope * today + intercept;
   const predictValueTomorrow = slope * tomorrow + intercept;
@@ -49,53 +44,60 @@ export default function Card({
   // const localDate = new Date(date).toLocaleString('es-CL');
 
   return (
-    <div className="flex h-full my-auto bg-[#2b2f34] p-10 rounded-lg drop-shadow-xl">
+    <div className="flex h-full my-auto bg-[#2b2f34] p-8 rounded-lg drop-shadow-xl">
       <div className="flex flex-col">
         <p className="flex text-5xl text-[#1dca7f] font-bold mb-5">
           {upperName === 'Unidad de fomento (UF)' ? ('UF') : upperName}
         </p>
-        <div className="flex flex-row gap-5 font-semibold">
-          <div className="flex flex-col gap-2 font-semibold">
-            <p className="text-[#05b2dc] font-['Roboto Mono']">
-              Valor
+        <div className="flex font-semibold grid grid-cols-2 gap-2">
+          <p className="text-[#05b2dc]">
+            Valor
+          </p>
+          <div className="flex flex-row gap-2">
+            <p className="text-white">
+              $
+              {valueToday.toString()}
+              {' '}
+              CLP
             </p>
-            <p className="text-[#05b2dc]">
-              Tendencia
-            </p>
-            <p className="text-[#05b2dc]">
-              Pronóstico hoy
-            </p>
-            <p className="text-[#05b2dc]">
-              Pronóstico mañana
-            </p>
+            {valueToday > valueYesterday
+              ? (
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-5 h-5 stroke-[#1dca7f] ">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" />
+                </svg>
+              )
+              : (
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-5 h-5 stroke-[#c9301c] rotate-180">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" />
+                </svg>
+              )}
           </div>
-          <div className="flex flex-col gap-2 font-semibold">
-            <div className="flex flex-row gap-4">
-              <p className="text-white">
-                {valueToday.toString()}
-              </p>
-              {valueToday > valueYesterday
-                ? (
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 stroke-[#1dca7f] stroke-2">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" />
-                  </svg>
-                )
-                : (
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 stroke-[#c9301c] stroke-2 rotate-180">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" />
-                  </svg>
-                )}
-            </div>
-            <p className="text-white">
-              {slope.toFixed(5)}
-            </p>
-            <p className="text-white">
-              {predictValueToday.toFixed(3)}
-            </p>
-            <p className="text-white">
-              {predictValueTomorrow.toFixed(3)}
-            </p>
-          </div>
+          <p className="text-[#05b2dc]">
+            Tendencia
+          </p>
+          <p className="text-white inline-block align-middle">
+            {(slope * 100).toFixed(5)}
+            {' '}
+            %
+          </p>
+          <p className="text-[#05b2dc]">
+            Pronóstico hoy
+          </p>
+          <p className="text-white inline-block align-middle">
+            $
+            {predictValueToday.toFixed(3)}
+            {' '}
+            CLP
+          </p>
+          <p className="text-[#05b2dc]">
+            Pronóstico mañana
+          </p>
+          <p className="text-white inline-block align-middle">
+            $
+            {predictValueTomorrow.toFixed(3)}
+            {' '}
+            CLP
+          </p>
         </div>
       </div>
     </div>

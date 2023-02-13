@@ -1,6 +1,7 @@
 import { React, useEffect, useState } from 'react';
-// eslint-disable-next-line import/no-extraneous-dependencies
+import { Link } from 'react-router-dom';
 import axios from 'axios';
+
 import Card from '../components/home/Card';
 
 export default function Home() {
@@ -26,19 +27,21 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="bg-[#21242a] flex flex-col w-screen h-screen p-20">
-      <header className="flex mb-32">
+    <div className="bg-[#21242a] flex flex-col w-screen h-screen p-10">
+      <header className="flex mb-24">
         <h1 className="text-8xl text-[#1dca7f] font-bold ">Money Data</h1>
       </header>
-      <div className="flex grid grid-cols-4 gap-12">
+      <div className="flex grid grid-cols-3 gap-4">
         {data.map((currency) => (
-          <Card
-            key={currency.codigo}
-            name={currency.nombre}
-            valueToday={currency.serie[0].valor}
-            valueYesterday={currency.serie[1].valor}
-            data={currency.serie}
-          />
+          <Link to={`/currency/${currency.codigo}`}>
+            <Card
+              key={currency.codigo}
+              name={currency.nombre}
+              valueToday={currency.serie[0].valor}
+              valueYesterday={currency.serie[1].valor}
+              data={currency.serie}
+            />
+          </Link>
         ))}
       </div>
     </div>
